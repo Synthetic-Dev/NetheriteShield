@@ -2,6 +2,7 @@ package me.syntheticdev.netheriteshield.events;
 
 import me.syntheticdev.netheriteshield.NetheriteShield;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +12,7 @@ import org.bukkit.event.inventory.PrepareSmithingEvent;
 import org.bukkit.event.inventory.SmithItemEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.Damageable;
+import sun.nio.ch.Net;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -53,24 +55,35 @@ public class InventoryListener implements Listener {
         ItemStack modifier = anvil.getItem(1);
 
         if (item == null || modifier == null) return;
-        if (!NetheriteShield.is(item) || !modifier.getType().equals(Material.NETHERITE_INGOT)) return;
+        if (!NetheriteShield.is(item)) return;
+
+        boolean isPlanks = Tag.PLANKS.isTagged(modifier.getType());
+        if (!(modifier.getType().equals(Material.NETHERITE_INGOT) || isPlanks)) return;
 
         ItemStack shield = item.clone();
         Damageable meta = (Damageable)shield.getItemMeta();
         if (!meta.hasDamage()) return;
 
         int maxDurability = shield.getType().getMaxDurability();
-        int repairAmount = (int)Math.round((double)maxDurability * 0.3d);
+        int repairAmount = (int)(isPlanks ? Math.round((double)maxDurability * 0.1d) : Math.round((double)maxDurability * 0.3d));
         int itemsToFull = (int)Math.ceil((double)meta.getDamage() / (double)repairAmount);
         int itemCost = Math.min(modifier.getAmount(), itemsToFull);
         if (itemCost == 0) return;
 
-        anvil.setRepairCost(itemCost);
         anvil.setRepairCostAmount(itemCost);
+        if (isPlanks) {
+            anvil.setRepairCost((int)Math.min(Math.ceil((double)itemCost / 1.5d), 6d));
+        } else {
+            anvil.setRepairCost(Math.min(itemCost, 4));
+        }
 
         meta.setDamage(meta.getDamage() - itemCost * repairAmount);
         shield.setItemMeta(meta);
 
+        if (event.getResult() != null && NetheriteShield.is(event.getResult())) {
+            event.getResult().setItemMeta(meta);
+            return;
+        }
         event.setResult(shield);
     }
 

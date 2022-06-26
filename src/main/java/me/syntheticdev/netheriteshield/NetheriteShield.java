@@ -74,7 +74,7 @@ public final class NetheriteShield extends JavaPlugin {
             PlayerInventory inventory = player.getInventory();
             inventory.removeItem(shield);
 
-            world.spawnParticle(Particle.ITEM_CRACK, player.getLocation(), 10, new ItemStack(Material.NETHERITE_BLOCK));
+            world.spawnParticle(Particle.BLOCK_CRACK, player.getLocation().add(0, 1.25, 0), 15, Material.NETHERITE_BLOCK.createBlockData());
             world.playSound(player, Sound.ITEM_SHIELD_BREAK, 1f, 1f);
         }
     }
