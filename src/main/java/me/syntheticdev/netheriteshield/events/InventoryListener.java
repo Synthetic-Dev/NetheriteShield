@@ -46,7 +46,7 @@ public class InventoryListener implements Listener {
 //    }
 
     @EventHandler
-    public void onRepair(PrepareAnvilEvent event) {
+    public void onPrepareRepair(PrepareAnvilEvent event) {
         AnvilInventory anvil = event.getInventory();
 
         ItemStack item = anvil.getItem(0);
@@ -59,10 +59,16 @@ public class InventoryListener implements Listener {
         Damageable meta = (Damageable)shield.getItemMeta();
         if (!meta.hasDamage()) return;
 
-        anvil.setRepairCost(3);
-
         int maxDurability = shield.getType().getMaxDurability();
-        meta.setDamage(meta.getDamage() - (int)Math.round(maxDurability * 0.2));
+        int repairAmount = (int)Math.round((double)maxDurability * 0.3d);
+        int itemsToFull = (int)Math.ceil((double)meta.getDamage() / (double)repairAmount);
+        int itemCost = Math.min(modifier.getAmount(), itemsToFull);
+        if (itemCost == 0) return;
+
+        anvil.setRepairCost(itemCost);
+        anvil.setRepairCostAmount(itemCost);
+
+        meta.setDamage(meta.getDamage() - itemCost * repairAmount);
         shield.setItemMeta(meta);
 
         event.setResult(shield);

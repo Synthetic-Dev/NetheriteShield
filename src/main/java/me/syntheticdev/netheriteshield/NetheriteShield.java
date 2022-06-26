@@ -2,6 +2,7 @@ package me.syntheticdev.netheriteshield;
 
 import me.syntheticdev.netheriteshield.events.DamageListener;
 import me.syntheticdev.netheriteshield.events.InventoryListener;
+import me.syntheticdev.netheriteshield.events.PlayerJoinListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -77,6 +78,7 @@ public final class NetheriteShield extends JavaPlugin {
     private void registerEvents() {
         PluginManager manager = Bukkit.getPluginManager();
 
+        manager.registerEvents(new PlayerJoinListener(), this);
         manager.registerEvents(new DamageListener(), this);
         manager.registerEvents(new InventoryListener(), this);
     }
