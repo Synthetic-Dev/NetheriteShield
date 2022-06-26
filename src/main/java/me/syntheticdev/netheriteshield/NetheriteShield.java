@@ -3,14 +3,14 @@ package me.syntheticdev.netheriteshield;
 import me.syntheticdev.netheriteshield.events.DamageListener;
 import me.syntheticdev.netheriteshield.events.InventoryListener;
 import me.syntheticdev.netheriteshield.events.PlayerJoinListener;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -61,6 +61,22 @@ public final class NetheriteShield extends JavaPlugin {
 
         shield.setItemMeta(meta);
         return shield;
+    }
+
+    public static void handleBreak(ItemStack shield, Player player) {
+        if (!NetheriteShield.is(shield)) return;
+
+        Damageable meta = (Damageable)shield.getItemMeta();
+        int maxDurability = shield.getType().getMaxDurability();
+
+        if (meta.getDamage() > maxDurability) {
+            World world = player.getWorld();
+            PlayerInventory inventory = player.getInventory();
+            inventory.removeItem(shield);
+
+            world.spawnParticle(Particle.ITEM_CRACK, player.getLocation(), 10, new ItemStack(Material.NETHERITE_BLOCK));
+            world.playSound(player, Sound.ITEM_SHIELD_BREAK, 1f, 1f);
+        }
     }
 
     @Override

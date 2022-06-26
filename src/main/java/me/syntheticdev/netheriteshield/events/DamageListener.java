@@ -35,6 +35,8 @@ public class DamageListener implements Listener {
         Damageable meta = (Damageable)shield.getItemMeta();
         meta.setDamage(meta.getDamage() + (int)Math.round(event.getDamage()));
         shield.setItemMeta(meta);
+
+        NetheriteShield.handleBreak(shield, player);
     }
 
     @EventHandler
@@ -72,6 +74,8 @@ public class DamageListener implements Listener {
                 meta.setDamage(meta.getDamage() + damageToReduce);
                 event.setDamage(event.getDamage() - damageToReduce);
                 shield.setItemMeta(meta);
+
+                NetheriteShield.handleBreak(shield, player);
                 break;
         }
     }
