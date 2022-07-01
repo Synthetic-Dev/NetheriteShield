@@ -4,3 +4,4 @@ main: me.syntheticdev.netheriteshield.NetheriteShield
 api-version: 1.19
 authors: [ SyntheticDev ]
 description: Adds a Netherite Shield
+depend: [ ResourceManager ]

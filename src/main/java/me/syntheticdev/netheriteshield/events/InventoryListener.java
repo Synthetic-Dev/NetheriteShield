@@ -3,19 +3,15 @@ package me.syntheticdev.netheriteshield.events;
 import me.syntheticdev.netheriteshield.NetheriteShield;
 import org.bukkit.Material;
 import org.bukkit.Tag;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.inventory.PrepareSmithingEvent;
-import org.bukkit.event.inventory.SmithItemEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.Damageable;
-import sun.nio.ch.Net;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class InventoryListener implements Listener {
     public InventoryListener() {}

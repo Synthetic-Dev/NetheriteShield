@@ -1,8 +1,8 @@
 package me.syntheticdev.netheriteshield;
 
+import com.github.syntheticdev.resourcemanager.ResourceManager;
 import me.syntheticdev.netheriteshield.events.DamageListener;
 import me.syntheticdev.netheriteshield.events.InventoryListener;
-import me.syntheticdev.netheriteshield.events.PlayerJoinListener;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -80,6 +80,12 @@ public final class NetheriteShield extends JavaPlugin {
     }
 
     @Override
+    public void onLoad() {
+        ResourceManager manager = (ResourceManager)Bukkit.getPluginManager().getPlugin("ResourceManager");
+        manager.addResource("netherite-shield");
+    }
+
+    @Override
     public void onEnable() {
         plugin = this;
 
@@ -94,7 +100,6 @@ public final class NetheriteShield extends JavaPlugin {
     private void registerEvents() {
         PluginManager manager = Bukkit.getPluginManager();
 
-        manager.registerEvents(new PlayerJoinListener(), this);
         manager.registerEvents(new DamageListener(), this);
         manager.registerEvents(new InventoryListener(), this);
     }
