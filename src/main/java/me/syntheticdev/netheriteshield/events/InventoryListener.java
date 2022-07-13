@@ -19,6 +19,8 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void onPrepareSmith(PrepareSmithingEvent event) {
         SmithingInventory inventory = event.getInventory();
+        Recipe recipe = inventory.getRecipe();
+        if (recipe == null || !NetheriteShield.is(recipe.getResult())) return;
 
         ItemStack base = inventory.getItem(0);
         ItemStack addition = inventory.getItem(1);
@@ -37,11 +39,6 @@ public class InventoryListener implements Listener {
         inventory.setResult(null);
         event.setResult(null);
     }
-
-//    @EventHandler
-//    public void onSmith(SmithItemEvent event) {
-//
-//    }
 
     @EventHandler
     public void onPrepareRepair(PrepareAnvilEvent event) {
